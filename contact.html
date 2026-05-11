@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020202">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Contact | Aegis Voice</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== 全局设置 ==================== */
+        :root {
+            --bg-color: #020202;
+            --core-green: #00FF41;
+            --text-grey: #888;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #0a0a0a 0%, #000 85%);
+            font-family: var(--font-mono); color: #ccc;
+            display: flex; flex-direction: column;
+        }
+
+        /* 导航栏 */
+        header {
+            flex: 0 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* LOGO */
+        .logo { 
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
+            color: #ffffff; text-transform: uppercase; 
+            text-decoration: none; cursor: pointer; transition: opacity 0.3s;
+        }
+        .logo:hover { opacity: 0.8; }
+
+        nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        nav a.active { color: var(--core-green); }
+
+        /* 主体内容 */
+        main {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            padding: 60px 20px; max-width: 900px; margin: 0 auto; width: 100%;
+            box-sizing: border-box;
+        }
+
+        .channel-status { color: var(--core-green); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .contact-intro { text-align: center; width: 100%; margin-bottom: 40px; line-height: 1.6; font-size: 0.9rem; }
+
+        /* 邮箱盒子 */
+        .email-box { border: 1px solid #333; padding: 20px 40px; text-align: center; margin-bottom: 60px; transition: all 0.3s; }
+        .email-box:hover { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .email-label { font-size: 0.7rem; color: #666; margin-bottom: 10px; letter-spacing: 1px; }
+        .email-link { color: #fff; text-decoration: none; font-size: 1.2rem; letter-spacing: 1px; border-bottom: 1px dashed #666; padding-bottom: 2px; }
+        .email-link:hover { color: var(--core-green); border-color: var(--core-green); }
+
+        .divider { width: 100%; border-bottom: 1px dashed #222; margin-bottom: 60px; }
+
+        /* 招募模块 (针对合伙人) */
+        .recruitment-section { 
+            width: 100%; 
+            border: 1px solid rgba(0, 255, 65, 0.3); 
+            background: rgba(0, 255, 65, 0.03); 
+            padding: 40px; position: relative; max-width: 800px; box-sizing: border-box;
+        }
+        .rec-tag { 
+            position: absolute; top: -10px; left: 20px; 
+            background: #000; color: var(--core-green); 
+            border: 1px solid var(--core-green); 
+            font-size: 0.7rem; padding: 2px 8px; font-weight: 700; 
+        }
+        .rec-content { display: flex; flex-direction: column; gap: 20px; }
+        .rec-title { font-size: 1.1rem; color: #fff; letter-spacing: 1px; font-weight: 800; text-transform: uppercase; border-bottom: 1px dashed #444; padding-bottom: 15px; margin-bottom: 5px; }
+        .rec-text { font-size: 0.85rem; line-height: 1.8; color: #aaa; }
+        
+        /* 高亮样式 */
+        .highlight-green { color: var(--core-green); font-weight: 700; }
+        .highlight-white { color: #fff; font-weight: 700; }
+        .tech-stack { 
+            color: #ddd; background: rgba(255,255,255,0.1); 
+            padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
+        }
+
+       /* ==================== 移动端专属适配 (Contact版) ==================== */
+        @media (max-width: 900px) {
+            /* 1. 导航栏修正 (全站统一) */
+            header { 
+                padding: 15px 15px; 
+                flex-direction: column; 
+                gap: 15px; 
+                align-items: center; /* 修正：居中对齐 */
+            }
+            
+            nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
+            nav ul { 
+                display: flex; 
+                gap: 10px; /* 修正：间距 10px */
+                width: max-content; 
+                padding: 0 10px; 
+                margin: 0; 
+            }
+            nav a { font-size: 0.7rem; font-weight: 600; white-space: nowrap; color: #999; }
+            nav a.active, nav a:hover { color: #fff; }
+
+            /* 2. 内容区域适配 */
+            main { padding: 40px 20px; width: 100%; }
+            .recruitment-section { padding: 30px 20px; } /* 手机上内边距稍微减小 */
+            .email-link { font-size: 1rem; } /* 邮箱字体防止过大撑破 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">AEGIS VOICE</a>
+      <nav>
+            <ul>
+                <li><a href="manifesto.html">MANIFESTO</a></li>
+                <li><a href="demo.html">DEMO</a></li>
+                <li><a href="pricing.html">PRICING</a></li>
+                <li><a href="privacy.html">PRIVACY</a></li>
+                <li><a href="status.html">STATUS</a></li>
+                <li><a href="contact.html" class="active">CONTACT</a></li>
+                <li class="yt-li">
+                    <a href="https://www.youtube.com/@aegisvoiceai" target="_blank" class="yt-nav-icon" title="Public Evidence Archive">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="channel-status">SECURE CHANNEL ESTABLISHED</div>
+        
+        <div class="contact-intro">
+            For enterprise inquiries, customized protocols, or bug reports.<br>
+            <span style="font-size: 0.7rem; color: #555;">Response Time: T-Minus 24 Hours.</span>
+        </div>
+
+        <div class="email-box">
+            <div class="email-label">DIRECT LINE</div>
+            <a href="mailto:Lucas@aegisvoice.com" class="email-link">Lucas@aegisvoice.com</a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="recruitment-section">
+            <div class="rec-tag">PROTOCOL: CO-FOUNDER SEARCH</div>
+            <div class="rec-content">
+                <div class="rec-title">SEEKING A CO-FOUNDER // THE ARCHITECT</div>
+                <div class="rec-text">
+                    I have forged the steel. Aegis V1.0 is alive and battle-tested—capable of <span class="highlight-white">1-hour+ continuous offline inference</span> on silicon without a single crash. The foundation is rock solid.
+                    <br><br>
+                    But I am not looking for an employee to maintain it. I am looking for a <span class="highlight-green">Partner</span> to perfect it.
+                    <br><br>
+                    I need a peer who can push the limits of our proprietary Hybrid Stream-Batch Architecture. If you are a master of <span class="tech-stack">INT8 Quantization</span>, <span class="tech-stack">Hexagon NPU Optimization</span>, or <span class="tech-stack">Zero-Copy Memory Management</span> on Android, do not send me a resume.
+                    <br><br>
+                    Send me your Github, or tell me how you'd bypass the memory bottleneck on Gen 2.
+                    <br><br>
+                    I am offering <span class="highlight-green">Co-Founder Equity</span> and a seat at the table. We are building the ultimate privacy tool for the elite. <strong>Limited seats available.</strong>
+                    <br><br>
+                    <span style="color: #666; font-size: 0.75rem;">// Contact Lucas directly via the email above. Subject: <strong>SUDO ROOT</strong></span>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

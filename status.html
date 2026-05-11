@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020202">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Status | Aegis Voice</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #020202;
+            --core-green: #00FF41;
+            --text-grey: #888;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #0a0a0a 0%, #000 85%);
+            font-family: var(--font-mono); color: #ccc;
+            display: flex; flex-direction: column;
+        }
+
+        header {
+            flex: 0 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .logo { 
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
+            color: #ffffff; text-transform: uppercase; 
+            text-decoration: none; cursor: pointer; transition: opacity 0.3s;
+        }
+        .logo:hover { opacity: 0.8; }
+
+        nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        nav a.active { color: var(--core-green); }
+
+        main {
+            flex: 1; display: flex; flex-direction: column;
+            padding: 60px 20px; max-width: 700px; margin: 0 auto; width: 100%;
+            font-size: 0.9rem; line-height: 1.8; color: #bbb;
+            box-sizing: border-box;
+        }
+
+        .status-header {
+            border-bottom: 1px dashed #333; padding-bottom: 20px; margin-bottom: 40px;
+        }
+        .status-title { font-size: 1.5rem; color: #fff; font-weight: 800; letter-spacing: 2px; margin-bottom: 5px; }
+        .status-meta { font-size: 0.7rem; color: var(--core-green); text-transform: uppercase; letter-spacing: 1px; }
+
+        h2 { color: #fff; font-size: 1rem; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; border-left: 3px solid var(--core-green); padding-left: 10px; }
+        p { margin-bottom: 20px; }
+        
+        .highlight { color: #fff; font-weight: 700; }
+        .warning-box { border: 1px solid #333; background: rgba(255,255,255,0.03); padding: 20px; margin: 30px 0; font-size: 0.85rem; }
+        
+        .final-barrier {
+            margin-top: 50px; 
+            border-top: 1px solid #333; 
+            padding-top: 30px;
+            color: #888;
+        }
+        
+        .critical-warning {
+            color: var(--core-green);
+            font-weight: 800;
+            display: block;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 900px) {
+            header { padding: 15px 15px; flex-direction: column; gap: 15px; align-items: center; }
+            nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
+            nav ul { display: flex; gap: 10px; width: max-content; padding: 0 10px; margin: 0; }
+            nav a { font-size: 0.7rem; font-weight: 600; white-space: nowrap; color: #999; }
+            nav a.active, nav a:hover { color: #fff; }
+            main { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">AEGIS VOICE</a>
+        <nav>
+            <ul>
+                <li><a href="manifesto.html">MANIFESTO</a></li>
+                <li><a href="demo.html">DEMO</a></li>
+                <li><a href="pricing.html">PRICING</a></li>
+                <li><a href="privacy.html">PRIVACY</a></li>
+                <li><a href="status.html" class="active">STATUS</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li class="yt-li">
+                    <a href="https://www.youtube.com/@aegisvoiceai" target="_blank" class="yt-nav-icon" title="Public Evidence Archive">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="status-header">
+            <div class="status-title">AEGIS CURRENT STATUS</div>
+            <div class="status-meta">SYSTEM LOG // V1.0 // PUBLIC RELEASE</div>
+        </div>
+
+        <p>I am Lucas.</p>
+        <p>Aegis V1.0 is now live.</p>
+        <p>It is a 100% offline, dual-AI voice input method based on a Unidirectional Communication Architecture, running entirely on local mobile compute.</p>
+        <p>We have cut the network connection to ensure Zero Upstream Data and Absolute Isolation. It runs only on your device.</p>
+
+        <div class="warning-box">
+            I will not sell you a fantasy. For early users willing to pay <span class="highlight">$99</span> to support us, you must know the truth:
+        </div>
+
+        <h2>Language Protocol</h2>
+        <p>V1.0 currently supports <span class="highlight">ENGLISH ONLY</span>.</p>
+        <p>To achieve the highest efficiency in local neural recognition, our current engineering is hyper-focused on the English language structure. We refuse to compromise performance for broad language support.</p>
+        <p>For custom neural model requests (Arabic, French, Russian, German, Chinese, etc.), please contact our development team for specialized deployment.</p>
+
+        <h2>Current Capability</h2>
+        <p>V1.0 speech recognition accuracy on the local NPU is approximately <span class="highlight">80%</span>.</p>
+
+        <h2>Physical Boundary</h2>
+        <p>Running offline means we cannot compete with the massive cloud computing power of GPT-4. This is not a defect; it is the <span class="highlight">physical reality</span> we must face for Absolute Privacy.</p>
+
+        <h2>Iteration Roadmap</h2>
+        <p><strong>V1.5:</strong> Deep kernel optimization to enhance local efficiency.<br>
+        <strong>V2.0:</strong> Offline Workstation architecture is in progress.</p>
+
+        <h2>On Payment & Refund</h2>
+        <p>Payment is your endorsement of the 'Offline Freedom' concept.</p>
+        <p>We strictly adhere to Google Play's standard refund policies. Additionally, we offer a <span class="highlight">14-day manual refund window</span> for early adopters. If the experience does not meet your expectations, contact us directly.</p>
+        <p style="color: var(--core-green); font-weight: 700;">// No questions asked.</p>
+
+        <h2>To Engineers</h2>
+        <p>If you want to dance on the edge of mobile computing limits, welcome to the optimization challenge.</p>
+        
+        <div class="final-barrier">
+            <p>
+                This is Aegis.<br>
+                Understand the capabilities, accept the boundaries, and then choose freedom.<br>
+                If you do not understand or accept this, please do not purchase.
+            </p>
+            <span class="critical-warning">
+                IF YOUR PRIMARY INPUT LANGUAGE IS NOT ENGLISH, DO NOT PURCHASE THIS VERSION.
+            </span>
+        </div>
+        <p>— Lucas</p>
+
+    </main>
+</body>
+</html>

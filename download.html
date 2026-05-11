@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020202">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Download | Aegis Voice</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== 全局设置 ==================== */
+        :root {
+            --bg-color: #020202;
+            --core-green: #00FF41;
+            --text-grey: #888;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top center, #111 0%, #000 70%);
+            font-family: var(--font-mono); color: #fff;
+            display: flex; flex-direction: column;
+        }
+
+        /* 导航栏 */
+        header {
+            flex: 0 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .logo { 
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
+            color: #ffffff; text-transform: uppercase; 
+            text-decoration: none; cursor: pointer; transition: opacity 0.3s;
+        }
+        .logo:hover { opacity: 0.8; }
+        
+        nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        nav a.active { color: var(--core-green); }
+
+        /* 主体内容 */
+        main {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            padding: 60px 20px; max-width: 1000px;
+            margin: 0 auto; width: 100%;
+            box-sizing: border-box;
+        }
+
+        .page-title { font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 40px; text-align: center; font-weight: 800; }
+
+        /* ==================== 平台布局 (金字塔结构) ==================== */
+        .download-matrix {
+            display: flex; flex-direction: column; align-items: center; gap: 30px;
+            width: 100%; margin-bottom: 60px;
+        }
+
+        /* 第一排：Hero Android */
+        .hero-row {
+            display: flex; justify-content: center; width: 100%;
+        }
+
+        /* 第二排：其他平台 */
+        .secondary-row {
+            display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; width: 100%;
+        }
+
+        /* 卡片基础样式 */
+        .platform-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        /* Android Hero 卡片样式 */
+        .hero-card {
+            width: 360px; /* 卡片加宽，容纳大Logo */
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.03); 
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+        }
+        .hero-card:hover {
+            border-color: var(--core-green);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1);
+        }
+
+        /* 次级卡片样式 */
+        .secondary-card {
+            width: 200px;
+            opacity: 0.5;
+            border-style: dashed;
+        }
+
+        /* Logo 样式 */
+        .plat-icon { 
+            width: 240px; 
+            height: auto; 
+            object-fit: contain; 
+            margin: 10px 0;
+        }
+        
+        .secondary-card .plat-icon { width: 32px; height: 32px; fill: #666; margin: 0; }
+
+        .plat-name { font-size: 0.9rem; letter-spacing: 2px; font-weight: 700; text-align: center; }
+        .hero-card .plat-name { font-size: 1.2rem; letter-spacing: 3px; margin-top: 5px; }
+
+        .status-badge { font-size: 0.6rem; padding: 4px 8px; border-radius: 2px; letter-spacing: 1px; }
+        .status-ready { background: var(--core-green); color: #000; font-weight: 800; }
+        .status-dev { border: 1px solid #444; color: #666; }
+
+        /* 卡片内的语言协议警告样式 */
+        .card-lang-protocol {
+            color: var(--core-green);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: -10px; 
+            margin-bottom: -5px;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+        }
+
+        .btn-dl { width: 100%; padding: 12px 0; text-align: center; font-size: 0.75rem; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; border: 1px solid transparent; }
+        
+        .btn-active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+        .btn-active:hover { background: var(--core-green); color: #000; border-color: var(--core-green); font-weight: 800; }
+        
+        .btn-locked { cursor: not-allowed; color: #444; border-color: #333; font-size: 0.65rem; }
+
+        /* ==================== 核心协议容器 ==================== */
+        .hardware-protocol-container {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px 40px;
+            max-width: 700px; width: 100%; text-align: left;
+        }
+
+        .protocol-title { font-size: 0.9rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px dashed #333; color: #fff; }
+        .highlight { color: var(--core-green); }
+        
+        .protocol-content p { font-size: 0.8rem; color: #aaa; line-height: 1.6; margin-bottom: 15px; }
+        .protocol-content strong { color: #fff; font-weight: 700; }
+
+        /* 分割线样式 (用于分隔法律和硬件) */
+        .section-barrier {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #333;
+        }
+
+        /* 硬件参数网格 */
+        .specs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 25px; border-top: 1px dashed #333; padding-top: 20px; }
+        .spec-item { display: flex; flex-direction: column; }
+        .spec-label { font-size: 0.6rem; color: #555; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+        .spec-value { font-size: 0.75rem; color: var(--core-green); font-weight: 700; }
+
+        /* 哲学注脚 */
+        .physics-footnote {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed #333;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #444;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+       /* ==================== 移动端专属适配 ==================== */
+        @media (max-width: 900px) {
+            header { 
+                padding: 15px 15px; 
+                flex-direction: column; 
+                gap: 15px; 
+                align-items: center; 
+            }
+            
+            nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
+            nav ul { display: flex; gap: 10px; width: max-content; padding: 0 10px; margin: 0; }
+            nav a { font-size: 0.7rem; font-weight: 600; white-space: nowrap; color: #999; }
+            nav a.active, nav a:hover { color: #fff; }
+
+            main { padding: 40px 20px; width: 100%; }
+            
+            .hero-card { width: 100%; max-width: none; transform: scale(1); }
+            .plat-icon { width: 100%; max-width: 180px; }
+            .secondary-row { gap: 15px; }
+            .secondary-card { width: 100%; padding: 20px; flex-direction: row; justify-content: space-between; height: auto; }
+            .secondary-card .plat-icon { margin: 0; }
+            
+            .specs-grid { grid-template-columns: 1fr; gap: 20px; }
+            .physics-footnote { font-size: 0.55rem; line-height: 1.4; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">AEGIS VOICE</a>
+        <nav>
+            <ul>
+                <li><a href="manifesto.html">MANIFESTO</a></li>
+                <li><a href="demo.html">DEMO</a></li>
+                <li><a href="pricing.html">PRICING</a></li>
+                <li><a href="privacy.html">PRIVACY</a></li>
+                <li><a href="status.html">STATUS</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li class="yt-li">
+                    <a href="https://www.youtube.com/@aegisvoiceai" target="_blank" class="yt-nav-icon" title="Public Evidence Archive">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-title">SELECT DEPLOYMENT TARGET</div>
+
+        <div class="download-matrix">
+            <div class="hero-row">
+                <div class="platform-card hero-card">
+                    <img class="plat-icon" src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Google_Play_2022_logo.svg" alt="Google Play Logo">
+                    <div class="plat-name">ANDROID</div>
+                    <div class="status-badge status-ready">SYSTEM READY</div>
+                    
+                    <div class="card-lang-protocol">LANGUAGE PROTOCOL: ENGLISH ONLY</div>
+
+                    <a href="https://play.google.com/store/apps/details?id=com.aegis.voice" class="btn-dl btn-active">GOOGLE PLAY STORE</a>
+                </div>
+            </div>
+
+            <div class="secondary-row">
+                <div class="platform-card secondary-card">
+                    <svg class="plat-icon" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.79-1.31.02-2.3-1.23-3.14-2.47-2.93-4.24-2.42-10.51.98-11.85 1.63-.66 2.87.1 3.73.1.84 0 2.44-.92 4.1-.79 1.4.05 2.63.7 3.39 1.83-3.03 1.84-2.5 6.44.59 7.66-.56 1.34-1.27 2.66-2.04 3.05zM12.97 3.03c.7-1 1.18-2.28 1-3.03-1.07.05-2.42.76-3.17 1.67-.67.81-1.26 2.1-1.09 3.1 1.19.11 2.53-.7 3.26-1.74z"/></svg>
+                    <div class="plat-name">iOS</div>
+                    <div class="status-badge status-dev">DEV CHANNEL</div>
+                    <a class="btn-dl btn-locked">LOCKED</a>
+                </div>
+
+                <div class="platform-card secondary-card">
+                    <svg class="plat-icon" viewBox="0 0 24 24"><path d="M4 2h2v8h12V2h2v20h-2v-8H6v8H4V2z"/></svg>
+                    <div class="plat-name">HARMONY OS</div>
+                    <div class="status-badge status-dev">DEV CHANNEL</div>
+                    <a class="btn-dl btn-locked">LOCKED</a>
+                </div>
+
+                <div class="platform-card secondary-card">
+                    <svg class="plat-icon" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+                    <div class="plat-name">WINDOWS</div>
+                    <div class="status-badge status-dev">DEV CHANNEL</div>
+                    <a class="btn-dl btn-locked">LOCKED</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hardware-protocol-container">
+            
+            <div class="protocol-title">
+                <span class="highlight">[ LEGAL PROTOCOL: INTELLECTUAL PROPERTY & INTEGRITY ]</span>
+            </div>
+            
+            <div class="protocol-content">
+                <p>
+                    The core algorithms are protected by International Copyright Treaties. Aegis is built on a proprietary <strong>"One-Way Flow Hybrid Architecture."</strong>
+                </p>
+                <p>
+                    We reserve the right to pursue legal liability globally for any infringement.
+                </p>
+
+                <p style="margin-top: 25px;">
+                    <strong>/// INTEGRITY ENFORCEMENT:</strong>
+                </p>
+                <p>
+                    Aegis operates in strict isolation with zero data collection.
+                </p>
+                <p>
+                    <strong>However, Aegis integrates Google Play App Signing & Integrity.</strong>
+                </p>
+                <p>
+                    Any instance failing this signature verification constitutes a serious violation of the <strong>Digital Millennium Copyright Act (DMCA)</strong>. We will initiate immediate litigation against such infringement.
+                </p>
+            </div>
+
+            <div class="section-barrier">
+                <div class="protocol-title">
+                    <span class="highlight">// HARDWARE PROTOCOL:</span> SILICON RESTRICTION
+                </div>
+
+                <div class="protocol-content">
+                    <p>
+                        Aegis is not a cloud wrapper. It is a <strong>Proprietary Dual-Engine AI</strong> running entirely on your local silicon.
+                    </p>
+                    <p>
+                        This architecture requires massive computational power to perform real-time matrix operations without latency.
+                    </p>
+                    <p>
+                        <strong>To ensure absolute speed and zero lag, we do not provide fallback modes, model downgrades, or degraded execution paths.</strong>
+                    </p>
+                    <p>
+                        If you cannot find Aegis in the Play Store, your device does not meet the minimum requirements for real-time, on-device processing. We do not compromise on performance.
+                    </p>
+                </div>
+
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">MINIMUM SILICON</span>
+                        <span class="spec-value">Snapdragon 8 Gen 3 or higher</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">MINIMUM RAM</span>
+                        <span class="spec-value">12GB LPDDR5X</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">REQUIRED OS</span>
+                        <span class="spec-value">Android 14+</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="physics-footnote">
+                * Hardware limitations are a matter of physics, not preference.
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

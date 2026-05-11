@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020202">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Manifesto | Aegis Voice</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #020202;
+            --core-green: #00FF41;
+            --text-grey: #888;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #0a0a0a 0%, #000 85%);
+            font-family: var(--font-mono);
+            color: #ccc;
+            display: flex; flex-direction: column;
+        }
+
+        header {
+            flex: 0 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* LOGO 修复：链接样式 */
+        .logo { 
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
+            color: #ffffff; text-transform: uppercase; 
+            text-decoration: none; cursor: pointer; transition: opacity 0.3s;
+        }
+        .logo:hover { opacity: 0.8; }
+
+        nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        nav a.active { color: var(--core-green); }
+
+        main {
+            flex: 1; display: flex; flex-direction: column;
+            padding: 60px 20px; max-width: 680px; margin: 0 auto; width: 100%;
+            font-size: 14px; line-height: 1.8; color: #bbbbbb;
+            box-sizing: border-box; /* 防止padding撑破宽度 */
+        }
+
+        p { margin-bottom: 25px; }
+        .highlight { color: #fff; }
+        .signature { margin-top: 60px; border-top: 1px dashed #333; padding-top: 20px; opacity: 0.5; font-size: 12px; }
+
+       /* ==================== 全站通用：移动端终极优化 ==================== */
+        @media (max-width: 900px) {
+            header { 
+                padding: 15px 15px; /* 减小边距 */
+                flex-direction: column; 
+                gap: 15px; 
+                align-items: center; /* 核心修正2：从 flex-start 改为 center，实现居中 */
+            }
+
+            /* 核心修正3：优化菜单布局，确保四个词能显示在一行 */
+            nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
+            nav ul { 
+                display: flex; 
+                gap: 10px; /* 核心修正4：间距从 25px 缩小到 10px */
+                width: max-content; 
+                padding: 0 10px;
+                margin: 0; 
+            }
+            nav a { 
+                font-size: 0.7rem; /* 字号稍微缩小 */
+                font-weight: 600; 
+                white-space: nowrap; 
+                color: #999; /* 提亮颜色，保持和首页一致 */
+            }
+            nav a.active, nav a:hover { color: #fff; }
+
+            main { padding: 40px 20px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">AEGIS VOICE</a>
+       <nav>
+            <ul>
+                <li><a href="manifesto.html" class="active">MANIFESTO</a></li>
+                <li><a href="demo.html">DEMO</a></li>
+                <li><a href="pricing.html">PRICING</a></li>
+                <li><a href="privacy.html">PRIVACY</a></li>
+                <li><a href="status.html">STATUS</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li class="yt-li">
+                    <a href="https://www.youtube.com/@aegisvoiceai" target="_blank" class="yt-nav-icon" title="Public Evidence Archive">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <p>I am Lucas.</p>
+        <p>I am a Systems Architect specializing in <span class="highlight">Complex Simplex Communication</span>.</p>
+        <p>In my domain, strict security demands that information flows only one way: From A to B. Never back. A return signal is considered a breach.</p>
+        <p>Dealing with extremely confidential patent drafts, I discovered a structural flaw in modern dictation tools: <span class="highlight">They talk too much.</span></p>
+        <p>They listen to you, but they also handshake with the cloud.</p>
+        <p>I could not tolerate even a 0.01% risk of a leak. So I went dark.</p>
+        <p>I applied Unidirectional Architecture to a voice engine and engineered Aegis.</p>
+        <p>No upstream data. No server handshakes. Just pure, isolated intelligence running on your silicon.</p>
+        <p class="highlight" style="margin-top: 30px;">"Absolute Silence is the core."</p>
+        <div class="signature">END OF FILE.</div>
+    </main>
+</body>
+</html>

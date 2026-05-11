@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#020202">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Evidence | Aegis Voice</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== 全局设置 ==================== */
+        :root {
+            --bg-color: #020202;
+            --core-green: #00FF41;
+            --alert-red: #FF3333;
+            --warn-orange: #FFAA00;
+            --text-grey: #888;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(to bottom, #050505 0%, #000 100%);
+            font-family: var(--font-mono); color: #ccc;
+            display: flex; flex-direction: column;
+        }
+
+        /* 导航栏 */
+        header {
+            flex: 0 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .logo { 
+            font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
+            color: #ffffff; text-transform: uppercase; 
+            text-decoration: none; cursor: pointer; transition: opacity 0.3s;
+        }
+        .logo:hover { opacity: 0.8; }
+        
+        nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+        nav a.active { color: var(--core-green); }
+
+        /* 主体内容布局 */
+        main {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            padding: 60px 40px; 
+            max-width: 1400px; 
+            margin: 0 auto; width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* ==================== 统一标题样式 (Global Section Title) ==================== */
+        .global-section-title {
+            font-size: 1.5rem;
+            color: #fff; 
+            letter-spacing: 4px; 
+            font-weight: 800; 
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* 页面标题区 */
+        .page-header { text-align: center; margin-bottom: 60px; max-width: 800px; }
+        .page-subtitle { font-size: 0.8rem; color: var(--core-green); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; }
+
+        /* ==================== 视频网格系统 ==================== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            margin-bottom: 80px; /* 原为120px，缩小一点以紧凑衔接预告区 */
+        }
+
+        .video-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            transition: all 0.3s;
+        }
+        .video-card:hover {
+            border-color: rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.65rem; color: #666; letter-spacing: 1px;
+        }
+        .meta-tag { color: var(--core-green); font-weight: 700; }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0; overflow: hidden; background: #000;
+        }
+        .video-wrapper iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        .card-footer {
+            padding: 20px;
+            display: flex; flex-direction: column; gap: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .video-desc { font-size: 0.8rem; color: #fff; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .video-sub { font-size: 0.7rem; color: #888; margin-bottom: 15px; line-height: 1.4; }
+
+        .btn-download {
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            width: 100%; padding: 12px 0;
+            background: transparent; border: 1px dashed #444;
+            color: #888; font-size: 0.7rem; text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .btn-download:hover {
+            border-color: var(--core-green); color: var(--core-green); background: rgba(0, 255, 65, 0.05);
+        }
+        .dl-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+        /* ==================== 2.0 预告专属样式 (Mockup) ==================== */
+        .preview-section {
+            width: 100%;
+            border-top: 1px dashed #333;
+            padding-top: 80px;
+            margin-bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .preview-layout {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; align-items: flex-start; max-width: 1100px; width: 100%; margin: 0 auto;
+        }
+        
+        .preview-content {
+            flex: 1; min-width: 300px; text-align: left;
+            border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); padding: 25px;
+        }
+
+        /* 手机 UI 模型外壳 */
+        .mockup-phone {
+            width: 320px;
+            background-color: #121212;
+            border: 2px solid #333;
+            border-radius: 24px;
+            padding: 30px 16px 20px 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 0 4px #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .mockup-phone::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 16px; background: #000; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+        }
+        
+        .mockup-main-header { text-align: center; margin-bottom: 20px; }
+        .mockup-main-title { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .mockup-main-subtitle { color: #BB86FC; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .mockup-main-card { background: #1e1e1e; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        
+        .mockup-card-label { font-size: 9px; color: #666; letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
+        .mockup-status-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .mockup-status-left { display: flex; align-items: center; color: #fff; font-size: 11px; }
+        .status-square { width: 8px; height: 8px; background-color: #FF3333; margin-right: 12px; border-radius: 1px; }
+        .mockup-status-btn { background: #6200EE; color: #fff; padding: 6px 12px; border-radius: 16px; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; }
+        
+        .mockup-tips-area { text-align: center; font-size: 8px; color: #888; line-height: 1.5; margin-top: 20px; }
+        
+        .mockup-studio-header { color: #fff; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; }
+        .mockup-studio-btn { background: #6200EE; color: #fff; width: 100%; text-align: center; padding: 14px 0; font-size: 12px; font-weight: bold; border-radius: 24px; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(98, 0, 238, 0.4); }
+        
+        .mockup-main-footer { text-align: center; font-size: 9px; color: #555; margin-top: 20px; }
+
+        /* ==================== 底部说明区 (Universal Input) ==================== */
+        .context-section {
+            max-width: 850px;
+            text-align: center;
+            border-top: 1px dashed #333;
+            padding-top: 80px;
+            width: 100%;
+            margin-bottom: 120px; 
+        }
+        
+        .highlight { color: #fff; font-weight: 700; }
+        
+        .context-p { 
+            font-size: 0.85rem; line-height: 1.8; color: #aaa; margin-bottom: 30px; 
+            max-width: 800px; margin-left: auto; margin-right: auto;
+        }
+
+        .app-grid {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
+            margin-top: 20px;
+        }
+        .app-tag {
+            border: 1px solid #333; color: #888;
+            padding: 8px 16px; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase;
+            transition: all 0.3s; white-space: nowrap;
+        }
+        .app-tag:hover {
+            border-color: var(--core-green); color: var(--core-green);
+            box-shadow: 0 0 15px rgba(0,255,65,0.1);
+        }
+
+        /* ==================== SYSTEM STATUS PROTOCOLS ==================== */
+        .status-dashboard {
+            width: 100%;
+            border-top: 1px solid #222;
+            padding-top: 80px;
+            text-align: center;
+            padding-bottom: 60px;
+        }
+
+        .status-sub {
+            font-size: 0.7rem; color: #666; letter-spacing: 1px; margin-bottom: 40px; text-transform: uppercase;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px; 
+        }
+
+        .status-card {
+            background: #000;
+            border: 1px solid #333;
+            padding: 0;
+            display: flex; flex-direction: column;
+            text-align: left;
+        }
+
+        .status-img-wrapper {
+            width: 100%;
+            aspect-ratio: 5/3; /* 1000x600 */
+            overflow: hidden;
+            border-bottom: 1px solid #222;
+        }
+        .status-img-wrapper img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        .status-card:hover .status-img-wrapper img { opacity: 1; }
+
+        .status-content { padding: 20px; }
+
+        .status-badge {
+            font-size: 0.6rem; padding: 4px 8px; border-radius: 2px; font-weight: 800; letter-spacing: 1px;
+            display: inline-block; margin-bottom: 15px;
+        }
+        .badge-warn { background: var(--warn-orange); color: #000; }
+        .badge-danger { background: var(--alert-red); color: #fff; }
+        .badge-safe { background: var(--core-green); color: #000; }
+
+        .status-head { font-size: 0.9rem; color: #fff; font-weight: 700; margin-bottom: 10px; }
+        .status-text { font-size: 0.7rem; color: #999; line-height: 1.5; }
+        .status-text strong { color: #ccc; }
+
+        /* Performance Note */
+        .status-note {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 20px;
+            border: 1px dashed #333;
+            background: rgba(255,255,255,0.02);
+            text-align: left;
+        }
+        .status-note-title {
+            color: var(--core-green); font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .status-note p {
+            font-size: 0.75rem; color: #888; line-height: 1.6; margin: 0;
+        }
+        .status-note strong { color: #fff; }
+
+        /* Copyright / Legal Footer */
+        .legal-footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid #111;
+            color: #444;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            line-height: 1.5;
+        }
+        .fingerprint-icon { width: 16px; height: 16px; fill: #444; flex-shrink: 0; }
+
+        /* 响应式适配 */
+        @media (max-width: 1100px) {
+            .video-grid { grid-template-columns: 1fr; max-width: 700px; }
+            .status-grid { grid-template-columns: 1fr 1fr; } 
+        }
+
+        @media (max-width: 900px) {
+            header { padding: 15px; flex-direction: column; gap: 15px; }
+            nav { width: 100%; overflow-x: auto; display: flex; justify-content: center; }
+            nav ul { padding: 0 10px; gap: 15px; }
+            main { padding: 40px 20px; }
+            
+            /* 手机端字体适配 */
+            .global-section-title { font-size: 1.2rem; }
+            
+            .context-section { padding-top: 40px; }
+            .status-grid { grid-template-columns: 1fr; }
+            .status-img-wrapper { aspect-ratio: 16/9; }
+            .legal-footer { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">AEGIS VOICE</a>
+        <nav>
+            <ul>
+                <li><a href="manifesto.html">MANIFESTO</a></li>
+                <li><a href="demo.html" class="active">DEMO</a></li>
+                <li><a href="pricing.html">PRICING</a></li>
+                <li><a href="privacy.html">PRIVACY</a></li>
+                <li><a href="status.html">STATUS</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li class="yt-li">
+                    <a href="https://www.youtube.com/@aegisvoiceai" target="_blank" class="yt-nav-icon" title="Public Evidence Archive">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <div class="global-section-title">OFFLINE PERFORMANCE AUDIT</div>
+            <div class="page-subtitle">
+                PROTOCOL: AIRPLANE MODE ON // NO EDITS // RAW OUTPUT<br>
+                DOWNLOAD THE ORIGINAL .MD TRANSCRIPTS BELOW EACH VIDEO
+            </div>
+        </div>
+
+        <div class="video-grid">
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #001_SPEED</span>
+                    <span class="meta-tag">DURATION: 05:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/KlvVh9T9UiU" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">LATENCY & ACCURACY BENCHMARK</div>
+                    <div class="video-sub">Testing "Hot Words" injection and real-time correction speed.</div>
+                    
+                    <a href="files/transcript_001.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #002_POP_CULTURE</span>
+                    <span class="meta-tag">DURATION: 10:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/9ac_HI4DRC4" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">RAPID FIRE CONVERSATION</div>
+                    <div class="video-sub">Casual speech patterns, slang, and fast-paced Q&A test.</div>
+                    
+                    <a href="files/transcript_002.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #003_TECH</span>
+                    <span class="meta-tag">DURATION: 15:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/R0iBQMLrfsw" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">AEGIS + OBSIDIAN WORKFLOW</div>
+                    <div class="video-sub">Sam Altman interview. Demonstrating the "Input Method" integration.</div>
+                    
+                    <a href="files/transcript_003.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #004_FINANCE</span>
+                    <span class="meta-tag">DURATION: 30:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/o1P4WLCOkQo" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">NOISE INTERFERENCE TEST</div>
+                    <div class="video-sub">Ray Dalio macroeconomics. Heavy background music interference test.</div>
+                    
+                    <a href="files/transcript_004.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #005_ACADEMIC</span>
+                    <span class="meta-tag">DURATION: 60:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/hp1Gf-U8Nu4" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">CONTINUOUS LECTURE CAPTURE</div>
+                    <div class="video-sub">Richard Susskind on Legal Tech. 1 Hour non-stop. British accent.</div>
+                    
+                    <a href="files/transcript_005.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="card-header">
+                    <span>ID: #006_STRESS</span>
+                    <span class="meta-tag">DURATION: 144:00</span>
+                </div>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/Ea7i3Q0bynI" allowfullscreen></iframe>
+                </div>
+                <div class="card-footer">
+                    <div class="video-desc">THERMAL & STABILITY TEST</div>
+                    <div class="video-sub">2.4 Hours of continuous processing. No crashes. No overheating.</div>
+                    
+                    <a href="files/transcript_006.md" download class="btn-download">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW .MD LOG
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="preview-section">
+            <div class="global-section-title" style="color: var(--core-green);">[ CLASSIFIED ] AEGIS STUDIO 2.0 PREVIEW</div>
+            <div class="status-sub">STATUS: INTERNAL TESTING // LAUNCHING IN 2-3 MONTHS</div>
+
+            <p class="context-p" style="max-width: 750px; margin: 0 auto 50px auto;">
+                We don't reveal the internal processing pipeline to protect our proprietary tech. We only show the unlocked dashboard and the raw results. <br>
+                <span class="highlight">Purchase the Founder Edition now to lock in this capability before the price increases to $299.</span>
+            </p>
+
+            <div class="preview-layout">
+                
+                <div class="mockup-phone">
+                    <div class="mockup-main-header">
+                        <div class="mockup-main-title">Aegis Voice</div>
+                        <div class="mockup-main-subtitle">YOUR OFFLINE DIGITAL STENOGRAPHER</div>
+                    </div>
+
+                    <div class="mockup-main-card">
+                        <div class="mockup-card-label">SYSTEM STATUS</div>
+                        
+                        <div class="mockup-status-row">
+                            <div class="mockup-status-left"><div class="status-square"></div>Keyboard Enabled</div>
+                            <div class="mockup-status-btn">ENABLE</div>
+                        </div>
+                        <div class="mockup-status-row">
+                            <div class="mockup-status-left"><div class="status-square"></div>Aegis Selected</div>
+                            <div class="mockup-status-btn">SELECT</div>
+                        </div>
+                        <div class="mockup-status-row">
+                            <div class="mockup-status-left"><div class="status-square"></div>Mic Permission</div>
+                            <div class="mockup-status-btn">ALLOW</div>
+                        </div>
+                        <div class="mockup-status-row">
+                            <div class="mockup-status-left"><div class="status-square"></div>Language Protocol</div>
+                            <div class="mockup-status-btn">VERIFY</div>
+                        </div>
+
+                        <div class="mockup-tips-area">
+                            🛡️ Trust Check: Turn on Airplane Mode. I work perfectly.<br>
+                            💡 Tip: Tap 'Aegis AI' on keyboard to toggle Dark Mode.<br><br>
+                            <span style="color: #BB86FC; font-weight: bold;">🧠 AI Optimization</span><br>
+                            Since I am offline, I can't guess your private context.<br>
+                            👉 Please add Names & Jargon to 'Hotwords' for perfect accuracy.<br><br>
+                            <span style="color: #BB86FC;">▲ 100% Offline AI. Zero Cloud.</span>
+                        </div>
+                    </div>
+
+                    <div class="mockup-main-card" style="border: 1px solid rgba(187, 134, 252, 0.4); box-shadow: 0 0 15px rgba(187, 134, 252, 0.1);">
+                        <div class="mockup-studio-header">
+                            <span style="color: #BB86FC; margin-right: 6px;">🔓</span> AEGIS STUDIO™
+                        </div>
+                        <div style="font-size: 9px; color: #888; margin-bottom: 15px; line-height: 1.4;">
+                            Please add local audio files for offline transcription.
+                        </div>
+                        <div class="mockup-studio-btn">ADD AUDIO FILE</div>
+                    </div>
+
+                    <div class="mockup-main-footer">
+                        Official Build | <span style="text-decoration: underline; color: #666;">aegisvoice.com</span>
+                    </div>
+                </div>
+
+                <div class="preview-content">
+                    <div style="color: #fff; font-size: 0.9rem; font-weight: 800; margin-bottom: 15px; letter-spacing: 1px;">/// THE EXTREME C++ FUZZY-MATCH TEST</div>
+                    
+                    <div class="video-wrapper" style="margin-bottom: 20px; border: 1px solid #333;">
+                        <iframe src="https://www.youtube.com/embed/xs0iQSyBoDE" allowfullscreen></iframe>
+                    </div>
+
+                    <a href="files/transcript_007.md" download class="btn-download" style="margin-bottom: 10px;">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD RAW OUTPUT (.MD)
+                    </a>
+                    <div style="font-size: 0.75rem; color: #888; margin-bottom: 30px; text-align: center;">
+                        * Transcribed using <strong>[ LAW ]</strong> domain protocol. Zero hotwords loaded.
+                    </div>
+
+                    <a href="files/transcript_008.md" download class="btn-download" style="border-color: #BB86FC; color: #BB86FC; background: rgba(187, 134, 252, 0.05); margin-bottom: 10px;">
+                        <svg class="dl-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        DOWNLOAD VIP CORRECTED OUTPUT (.MD)
+                    </a>
+                    <div style="font-size: 0.75rem; color: #888; margin-bottom: 15px; text-align: center; line-height: 1.5;">
+                        * Transcribed using <strong>[ LAW ] + [ CUSTOM ]</strong> domains.<br>The following 16 VIP targets were injected to eradicate acoustic hallucinations:
+                    </div>
+                    
+                    <div style="background: #050505; border: 1px dashed #333; padding: 15px; font-family: var(--font-mono); font-size: 0.65rem; color: #BB86FC; line-height: 1.8; text-align: center;">
+                        Ray Kurzweil | John Searle | Daniel Katz | Garry Kasparov<br>
+                        Philip Capper | Lex Machina | Sermo | Legal OnRamp<br>
+                        Neota Logic | Accenture | Deloitte | Khan Academy<br>
+                        Embedded Knowledge Model | Latent Damage Act<br>
+                        Imprimatur | Hypochondriacs
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="context-section">
+            <div class="global-section-title">UNIVERSAL INPUT INJECTION</div>
+            
+            <p class="context-p">
+                Aegis is not a standalone note-taking app. It is a system-level <span class="highlight" style="white-space: nowrap;">Input Method Service (IMS)</span>
+                <br><br>
+                This means wherever there is a blinking cursor, Aegis lives there. We inject pure text directly into the active input field. No copy-pasting required
+            </p>
+
+            <div class="app-grid">
+                <div class="app-tag">[ OBSIDIAN ]</div>
+                <div class="app-tag">[ WHATSAPP ]</div>
+                <div class="app-tag">[ GMAIL ]</div>
+                <div class="app-tag">[ SIGNAL ]</div>
+                <div class="app-tag">[ TERMINAL ]</div>
+                <div class="app-tag">[ WORD ]</div>
+            </div>
+            
+            <p class="context-p" style="margin-top: 30px; font-size: 0.7rem; color: #555;">
+                * Validated on Android 14. Works in Airplane Mode. Zero Data Leaks
+            </p>
+        </div>
+
+        <div class="status-dashboard">
+            <div class="global-section-title">SYSTEM STATUS INDICATORS</div>
+            <div class="status-sub">UNDERSTANDING NPU LATENCY & QUEUE MANAGEMENT</div>
+
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="status-img-wrapper">
+                        <img src="images/status_queue.jpg" alt="Queue Status Indicator">
+                    </div>
+                    <div class="status-content">
+                        <div class="status-badge badge-warn">WARNING: QUEUE BUILDUP</div>
+                        <div class="status-head">AUDIO BUFFERING</div>
+                        <div class="status-text">
+                            <strong>Indicator:</strong> "Queue: 13"<br><br>
+                            <strong>Meaning:</strong> Audio input is faster than NPU processing. 13 slices are buffered.<br><br>
+                            <strong>Action:</strong> Do NOT close app. Ideally close background games/videos to free up NPU resources.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-img-wrapper">
+                        <img src="images/status_refining_high.jpg" alt="High Refining Count">
+                    </div>
+                    <div class="status-content">
+                        <div class="status-badge badge-danger">CRITICAL: DO NOT CLOSE</div>
+                        <div class="status-head">PROCESSING DEBT</div>
+                        <div class="status-text">
+                            <strong>Indicator:</strong> "Refining: 14"<br><br>
+                            <strong>Meaning:</strong> You pressed STOP, but the brain is still working. 14 buffered slices remain.<br><br>
+                            <strong>Warning:</strong> Force-closing now will result in permanent data loss of the last few minutes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-img-wrapper">
+                        <img src="images/status_refining_low.jpg" alt="Low Refining Count">
+                    </div>
+                    <div class="status-content">
+                        <div class="status-badge badge-danger">WAITING TO FINISH</div>
+                        <div class="status-head">ALMOST COMPLETE</div>
+                        <div class="status-text">
+                            <strong>Indicator:</strong> "Refining: 2"<br><br>
+                            <strong>Meaning:</strong> The queue is clearing. Only 2 slices left to transcribe.<br><br>
+                            <strong>Action:</strong> Patience. Wait for the green signal before exiting or switching apps.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-img-wrapper">
+                        <img src="images/status_done.jpg" alt="Done Status">
+                    </div>
+                    <div class="status-content">
+                        <div class="status-badge badge-safe">SYSTEM SAFE</div>
+                        <div class="status-head">TRANSMISSION READY</div>
+                        <div class="status-text">
+                            <strong>Indicator:</strong> "Done" (Green)<br><br>
+                            <strong>Meaning:</strong> All buffers cleared. Every syllable is converted to text.<br><br>
+                            <strong>Action:</strong> You may now copy text, send message, or safely exit the application.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-note">
+                <div class="status-note-title">/// PERFORMANCE NOTE: WHY CAN'T I SEE THE "QUEUE"?</div>
+                <p>
+                    The <strong>"QUEUE"</strong> indicator is hidden by default. It only triggers when the system buffer exceeds <strong>5+ audio slices</strong>.
+                    <br><br>
+                    If you never see this warning during your recording session, <strong>DO NOT PANIC.</strong>
+                    <br>
+                    It simply means your device's NPU is powerful enough to handle real-time processing with zero backlog.
+                    <br>
+                    <strong>Absence of this warning is the ultimate proof of your hardware's performance.</strong>
+                </p>
+            </div>
+
+            <div class="legal-footer">
+                <svg class="fingerprint-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-7.75 16.33l1.17-1.57A8 8 0 0 1 12 4a8 8 0 0 1 8 8 8 8 0 0 1-5.06 7.42l.53 1.93A10 10 0 0 0 12 2zm-2 20h4v-2h-4v2zm6.93-4.24l-1.63-1.12a5.95 5.95 0 0 0 1.6-3.64h2.01a7.95 7.95 0 0 1-1.98 4.76zM7.1 17.76l-1.63 1.12A7.95 7.95 0 0 1 3.5 14h2.01a5.95 5.95 0 0 0 1.59 3.76zM12 6a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4 4 4 0 0 1 4 4h2a6 6 0 0 0-6-6z"/></svg>
+                // PROPRIETARY DESIGN: THE "COMPUTING POWER VISUALIZATION DASHBOARD" AND "VOICE-FIRST LAYOUT" ARE GLOBAL FIRST INNOVATIONS BY AEGIS. INTELLECTUAL PROPERTY PROTECTED.
+            </div>
+
+        </div>
+
+    </main>
+</body>
+</html>
