@@ -68,47 +68,20 @@
         .email-link { color: #fff; text-decoration: none; font-size: 1.2rem; letter-spacing: 1px; border-bottom: 1px dashed #666; padding-bottom: 2px; }
         .email-link:hover { color: var(--core-green); border-color: var(--core-green); }
 
-        .divider { width: 100%; border-bottom: 1px dashed #222; margin-bottom: 60px; }
-
-        /* 招募模块 (针对合伙人) */
-        .recruitment-section { 
-            width: 100%; 
-            border: 1px solid rgba(0, 255, 65, 0.3); 
-            background: rgba(0, 255, 65, 0.03); 
-            padding: 40px; position: relative; max-width: 800px; box-sizing: border-box;
-        }
-        .rec-tag { 
-            position: absolute; top: -10px; left: 20px; 
-            background: #000; color: var(--core-green); 
-            border: 1px solid var(--core-green); 
-            font-size: 0.7rem; padding: 2px 8px; font-weight: 700; 
-        }
-        .rec-content { display: flex; flex-direction: column; gap: 20px; }
-        .rec-title { font-size: 1.1rem; color: #fff; letter-spacing: 1px; font-weight: 800; text-transform: uppercase; border-bottom: 1px dashed #444; padding-bottom: 15px; margin-bottom: 5px; }
-        .rec-text { font-size: 0.85rem; line-height: 1.8; color: #aaa; }
-        
-        /* 高亮样式 */
-        .highlight-green { color: var(--core-green); font-weight: 700; }
-        .highlight-white { color: #fff; font-weight: 700; }
-        .tech-stack { 
-            color: #ddd; background: rgba(255,255,255,0.1); 
-            padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
-        }
-
-       /* ==================== 移动端专属适配 (Contact版) ==================== */
+       /* ==================== 移动端专属适配 ==================== */
         @media (max-width: 900px) {
             /* 1. 导航栏修正 (全站统一) */
             header { 
                 padding: 15px 15px; 
                 flex-direction: column; 
                 gap: 15px; 
-                align-items: center; /* 修正：居中对齐 */
+                align-items: center; 
             }
             
             nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
             nav ul { 
                 display: flex; 
-                gap: 10px; /* 修正：间距 10px */
+                gap: 10px; 
                 width: max-content; 
                 padding: 0 10px; 
                 margin: 0; 
@@ -118,8 +91,7 @@
 
             /* 2. 内容区域适配 */
             main { padding: 40px 20px; width: 100%; }
-            .recruitment-section { padding: 30px 20px; } /* 手机上内边距稍微减小 */
-            .email-link { font-size: 1rem; } /* 邮箱字体防止过大撑破 */
+            .email-link { font-size: 1rem; } 
         }
     </style>
 </head>
@@ -155,29 +127,7 @@
 
         <div class="email-box">
             <div class="email-label">DIRECT LINE</div>
-            <a href="mailto:Lucas@aegisvoice.com" class="email-link">Lucas@aegisvoice.com</a>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="recruitment-section">
-            <div class="rec-tag">PROTOCOL: CO-FOUNDER SEARCH</div>
-            <div class="rec-content">
-                <div class="rec-title">SEEKING A CO-FOUNDER // THE ARCHITECT</div>
-                <div class="rec-text">
-                    I have forged the steel. Aegis V1.0 is alive and battle-tested—capable of <span class="highlight-white">1-hour+ continuous offline inference</span> on silicon without a single crash. The foundation is rock solid.
-                    <br><br>
-                    But I am not looking for an employee to maintain it. I am looking for a <span class="highlight-green">Partner</span> to perfect it.
-                    <br><br>
-                    I need a peer who can push the limits of our proprietary Hybrid Stream-Batch Architecture. If you are a master of <span class="tech-stack">INT8 Quantization</span>, <span class="tech-stack">Hexagon NPU Optimization</span>, or <span class="tech-stack">Zero-Copy Memory Management</span> on Android, do not send me a resume.
-                    <br><br>
-                    Send me your Github, or tell me how you'd bypass the memory bottleneck on Gen 2.
-                    <br><br>
-                    I am offering <span class="highlight-green">Co-Founder Equity</span> and a seat at the table. We are building the ultimate privacy tool for the elite. <strong>Limited seats available.</strong>
-                    <br><br>
-                    <span style="color: #666; font-size: 0.75rem;">// Contact Lucas directly via the email above. Subject: <strong>SUDO ROOT</strong></span>
-                </div>
-            </div>
+            <a href="mailto:lucas@chuanis.com" class="email-link">lucas@chuanis.com</a>
         </div>
     </main>
 </body>
