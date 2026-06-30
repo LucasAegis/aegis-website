@@ -6,156 +6,155 @@
     <meta name="theme-color" content="#020202">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <title>Pricing | Aegis Voice</title>
+    <title>License & Support | Aegis Voice</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        /* ==================== 全局设置 ==================== */
         :root {
             --bg-color: #020202;
-            --cage-color: rgba(255, 255, 255, 0.1);
             --core-green: #00FF41;
             --text-grey: #888;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.1);
             --font-mono: 'JetBrains Mono', monospace;
-            --font-sans: 'Inter', sans-serif;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; min-height: 100%;
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at top center, #111 0%, #000 60%);
+            background-image: radial-gradient(circle at top center, #111 0%, #000 70%);
             font-family: var(--font-mono); color: #fff;
             display: flex; flex-direction: column;
         }
 
+        /* 导航栏 */
         header {
+            flex: 0 0 auto;
             display: flex; justify-content: space-between; align-items: center;
             padding: 24px 48px; border-bottom: 1px solid rgba(255,255,255,0.03);
         }
-
+        
         .logo { 
             font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; 
             color: #ffffff; text-transform: uppercase; 
             text-decoration: none; cursor: pointer; transition: opacity 0.3s;
         }
         .logo:hover { opacity: 0.8; }
-
+        
         nav ul { display: flex; list-style: none; gap: 32px; margin: 0; padding: 0; }
         nav a { text-decoration: none; color: #555; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
         nav a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
         nav a.active { color: var(--core-green); }
 
+        /* 主体内容 */
         main {
             flex: 1; display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px; max-width: 1200px;
-            margin: 0 auto; width: 100%; box-sizing: border-box;
+            padding: 60px 20px 100px 20px; max-width: 800px;
+            margin: 0 auto; width: 100%;
+            box-sizing: border-box;
         }
 
-        .visual-anchor { position: relative; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
-        .mini-cage { position: absolute; width: 100%; height: 100%; border: 1px solid var(--cage-color); border-radius: 50%; box-shadow: 0 0 20px rgba(0, 255, 65, 0.05); }
-        .mini-mic { width: 24px; height: 24px; fill: none; stroke: var(--core-green); stroke-width: 1.5; filter: drop-shadow(0 0 8px rgba(0, 255, 65, 0.3)); }
-        
-        .page-title { font-size: 1.5rem; font-weight: 800; letter-spacing: 4px; margin-bottom: 10px; text-align: center; }
-        
-        .pricing-disclaimer {
-            font-size: 0.65rem; color: #555; max-width: 600px; text-align: center; margin-bottom: 60px; line-height: 1.6;
-            border: 1px solid #222; padding: 15px 30px; background: rgba(255,255,255,0.02);
-        }
-        .pricing-disclaimer strong { color: #888; }
+        .page-title { font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 50px; text-align: center; font-weight: 800; }
 
-        .pricing-grid { display: flex; gap: 40px; width: 100%; justify-content: center; flex-wrap: wrap; margin-bottom: 80px; align-items: center; }
-        
-        .pricing-card { 
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); 
-            padding: 40px 30px; width: 320px; 
-            display: flex; flex-direction: column; position: relative; 
-            backdrop-filter: blur(10px); transition: all 0.3s; 
+        /* ==================== 核心定价卡片 ==================== */
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--core-green);
+            padding: 50px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.08);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* The Standard Card (Future) */
-        .pricing-card.standard {
-            border-color: #333;
-            opacity: 0.5;
-            filter: grayscale(100%);
-        }
-        .pricing-card.standard:hover {
-            opacity: 0.8;
-            filter: grayscale(0%);
-            border-color: #555;
+        .pricing-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--core-green);
         }
 
-        /* The Founder Card (Active) */
-        .pricing-card.featured { 
-            border: 1px solid var(--core-green); 
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.1); 
-            padding: 50px 30px; 
-            transform: scale(1.05);
-            z-index: 2; 
-            background: rgba(0, 255, 65, 0.02);
+        .tier-name { font-size: 1.5rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; color: #fff; }
+        .tier-desc { font-size: 0.85rem; color: #aaa; margin-bottom: 30px; line-height: 1.5; }
+        
+        .price-box { margin-bottom: 40px; }
+        .price-currency { font-size: 1.5rem; vertical-align: top; color: var(--core-green); }
+        .price-amount { font-size: 4.5rem; font-weight: 800; line-height: 1; color: #fff; }
+        .price-type { display: block; font-size: 0.8rem; color: #666; letter-spacing: 2px; margin-top: 10px; text-transform: uppercase; }
+
+        .feature-list { list-style: none; padding: 0; margin: 0 0 40px 0; text-align: left; }
+        .feature-list li { 
+            padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); 
+            font-size: 0.85rem; color: #d2d0dd; display: flex; align-items: center; gap: 10px;
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-list li svg { width: 16px; height: 16px; fill: var(--core-green); flex-shrink: 0; }
+
+        .btn-buy {
+            display: block; width: 100%; padding: 18px 0;
+            background: rgba(0, 255, 65, 0.1);
+            color: var(--core-green); border: 1px solid var(--core-green);
+            text-decoration: none; font-weight: 800; font-size: 0.9rem; letter-spacing: 2px;
+            border-radius: 8px; transition: all 0.3s;
+        }
+        .btn-buy:hover {
+            background: var(--core-green); color: #000;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
         }
 
-        .badge { position: absolute; top: -12px; right: 50%; transform: translateX(50%); background: var(--core-green); color: #000; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; padding: 6px 16px; letter-spacing: 1px; white-space: nowrap; }
-        
-        .plan-name { color: var(--text-grey); font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
-        .featured .plan-name { color: var(--core-green); font-weight: 800; }
-        
-        .price-group { margin-bottom: 10px; display: flex; flex-direction: column; align-items: center; }
-        .plan-price { font-size: 3rem; font-weight: 800; display: flex; align-items: baseline; }
-        .plan-price span { font-size: 1rem; font-weight: 400; color: var(--text-grey); margin-left: 5px; }
-        .strike-price { text-decoration: line-through; color: #444; font-size: 1.2rem; margin-bottom: -5px; font-weight: 600; }
-        
-        /* 🚀 New Language Tag Style */
-        .lang-tag {
-            font-size: 0.6rem;
-            color: var(--core-green);
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            padding: 4px 8px;
-            margin-top: 10px;
-            margin-bottom: 20px; /* Adjust spacing */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.8;
+        /* ==================== 开源宣言区域 ==================== */
+        .open-source-box {
+            margin-top: 60px;
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            text-align: left;
         }
-        .standard .lang-tag { color: #666; border-color: #444; }
 
-        .plan-desc { color: var(--text-grey); font-size: 0.75rem; margin-bottom: 30px; text-align: center; line-height: 1.4; }
+        .os-title { font-size: 1.1rem; color: #fff; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .os-title svg { width: 24px; height: 24px; fill: #fff; }
         
-        .features-list { list-style: none; padding: 0; margin: 0 0 30px 0; flex-grow: 1; }
-        .features-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 0.8rem; color: #ccc; }
-        
-        .check-icon { width: 14px; height: 14px; stroke: var(--core-green); fill: none; stroke-width: 2; }
-        .lock-icon { width: 14px; height: 14px; stroke: #666; fill: none; stroke-width: 2; }
-        /* ⚠️ NEW: Clock Icon for Limited Time */
-        .clock-icon { width: 14px; height: 14px; stroke: var(--core-green); fill: none; stroke-width: 2; }
-        
-        .trial-text { font-size: 0.7rem; color: var(--core-green); text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; opacity: 0.9; }
-        
-        .btn-buy { text-align: center; padding: 16px 0; width: 100%; text-decoration: none; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.2); color: #fff; transition: all 0.3s; font-weight: 600; cursor: pointer; }
-        
-        .btn-disabled { border-color: #333; color: #555; cursor: not-allowed; }
-        .btn-disabled:hover { background: none; border-color: #333; }
+        .os-content { font-size: 0.85rem; color: #aaa; line-height: 1.7; margin-bottom: 25px; }
+        .os-content strong { color: #fff; }
 
-        .featured .btn-buy { background: var(--core-green); color: #000; border: none; font-weight: 800; }
-        .featured .btn-buy:hover { box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); transform: translateY(-2px); }
+        .btn-github {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background: #fff; color: #000; text-decoration: none;
+            padding: 12px 24px; border-radius: 6px; font-weight: 800; font-size: 0.8rem;
+            letter-spacing: 1px; transition: all 0.3s;
+        }
+        .btn-github:hover { background: #d2d0dd; transform: translateY(-2px); }
+        .btn-github svg { width: 18px; height: 18px; fill: currentColor; }
 
-        .terminal-preview-section { width: 100%; text-align: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 60px; }
-        .preview-title { font-size: 1rem; letter-spacing: 3px; margin-bottom: 30px; color: var(--text-grey); }
-        .phone-mockup { width: 320px; height: 600px; border: 2px solid #333; border-radius: 30px; margin: 0 auto; padding: 20px; box-sizing: border-box; background: #000; position: relative; display: flex; flex-direction: column; justify-content: flex-end; }
-        .mockup-keyboard { height: 250px; border-top: 1px solid var(--core-green); display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 10px; color: var(--core-green); } /* Gap adjusted */
-        .mockup-status { font-size: 0.7rem; letter-spacing: 2px; opacity: 0.7; }
-        .mockup-mic { width: 40px; height: 40px; fill: none; stroke: var(--core-green); }
-        .mockup-lang { font-size: 0.6rem; color: #555; letter-spacing: 1px; margin-top: 5px; } /* New Style for mockup lang */
-
+        /* ==================== 移动端适配 ==================== */
         @media (max-width: 900px) {
-            header { padding: 15px 15px; flex-direction: column; gap: 15px; align-items: center; }
+            header { 
+                padding: 15px 15px; 
+                flex-direction: column; 
+                gap: 15px; 
+                align-items: center; 
+            }
+            
             nav { width: 100%; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
             nav ul { display: flex; gap: 10px; width: max-content; padding: 0 10px; margin: 0; }
             nav a { font-size: 0.7rem; font-weight: 600; white-space: nowrap; color: #999; }
-            .pricing-grid { gap: 30px; flex-direction: column-reverse; }
-            .pricing-card.featured { transform: scale(1); width: 100%; max-width: 320px; }
-            .pricing-card.standard { width: 100%; max-width: 320px; }
+            nav a.active, nav a:hover { color: #fff; }
+
+            main { padding: 40px 15px; }
+            
+            .pricing-card { padding: 30px 20px; }
+            .price-amount { font-size: 3.5rem; }
+            
+            .open-source-box { padding: 25px 20px; margin-top: 40px; }
+            .os-title { font-size: 1rem; }
+            .btn-github { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -182,77 +181,42 @@
     </header>
 
     <main>
-        <div class="visual-anchor">
-            <div class="mini-cage"></div>
-            <svg class="mini-mic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-        </div>
-        <div class="page-title">LICENSE ACQUISITION</div>
-        
-        <div class="pricing-disclaimer">
-            // <strong>ONE-TIME PURCHASE. NO SUBSCRIPTIONS.</strong><br>
-            Aegis operates 100% locally using our proprietary INT8 engine.<br>
-            Secure your access now. Price increases to $299 in approx. 2-3 months upon V1.5 release.
-        </div>
+        <div class="page-title">LICENSE & SUPPORT</div>
 
-        <div class="pricing-grid">
+        <div class="pricing-card">
+            <div class="tier-name">AEGIS PRO LICENSE</div>
+            <div class="tier-desc">The ultimate offline AI transcription engine engineered for zero-network environments. English only.</div>
             
-            <div class="pricing-card standard">
-                <div class="plan-name">Standard License</div>
-                <div class="price-group">
-                    <div class="plan-price">$299<span>/ life</span></div>
-                </div>
-                <div class="lang-tag">[ ENGLISH PROTOCOL ONLY ]</div>
-
-                <div class="plan-desc">Retail Price (Est. in 2-3 Months)</div>
-                <ul class="features-list">
-                    <li><svg class="lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> <strong>High-Fidelity Model (85%+ Acc)</strong></li>
-                    <li><svg class="lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Studio 2.0 & 3.0 Ready</li>
-                    <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Commercial Use License</li>
-                    <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Standard Support</li>
-                </ul>
-                <div class="trial-text basic-trial">[ COMING SOON ]</div>
-                <a href="#" class="btn-buy btn-disabled">AWAITING RELEASE</a>
+            <div class="price-box">
+                <span class="price-currency">$</span><span class="price-amount">299</span>
+                <span class="price-type">One-Time Payment / Lifetime Access</span>
             </div>
 
-            <div class="pricing-card featured">
-                <div class="badge">EARLY BIRD ENDING SOON</div>
-                <div class="plan-name">Founder Edition</div>
-                <div class="price-group">
-                    <div class="strike-price">$299.00</div>
-                    <div class="plan-price">$99<span>/ life</span></div>
-                </div>
-                <div class="lang-tag">[ ENGLISH PROTOCOL ONLY ]</div>
+            <ul class="feature-list">
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Absolute Privacy (0 Data Collection)</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 1-Million-Word Local Lexicon</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Continuous Real-Time Dictation (200 Mins)</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Offline Batch Studio (Up to 500 Mins)</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Dynamic Domain Switching (Tech/Legal/Business)</li>
+            </ul>
 
-                <div class="plan-desc" style="color:var(--core-green)">Lock in the $299 High-Fidelity model for $99.</div>
-                <ul class="features-list">
-                    <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <strong>Immediate Access (V1.0)</strong></li>
-                    <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <strong>Free Upgrade to 85%+ Model</strong></li>
-                    <li><svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <strong>Includes Studio 2.0 & 3.0</strong></li>
-                    
-                    <li>
-                        <svg class="clock-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 
-                        <strong>Early Bird Pricing Ends in 60 Days</strong>
-                    </li>
-                </ul>
-                <div class="trial-text">[ 14-DAY MONEY-BACK GUARANTEE ]</div>
-                <a href="https://play.google.com/store/apps/details?id=com.aegis.voice" class="btn-buy">GET LIFETIME ACCESS</a>
-            </div>
-
+            <a href="https://play.google.com/store/apps/details?id=com.aegis.voice" target="_blank" class="btn-buy">GET IT ON GOOGLE PLAY</a>
         </div>
 
-        <div class="terminal-preview-section">
-            <div class="preview-title">// TERMINAL INTERFACE PREVIEW //</div>
-            <div class="phone-mockup">
-                <div style="flex:1; display:flex; justify-content:center; align-items:center; color:#333; font-size:0.8rem;">
-                    [ SECURE TEXT INPUT AREA ]
-                </div>
-                <div class="mockup-keyboard">
-                    <div class="mockup-status">NETWORK STATUS: OFFLINE / BLOCKED</div>
-                    <svg class="mockup-mic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                    <div style="font-size: 0.7rem; letter-spacing: 1px;">LISTENING...</div>
-                    <div class="mockup-lang">[ ENGLISH PROTOCOL ACTIVE ]</div>
-                </div>
+        <div class="open-source-box">
+            <div class="os-title">
+                <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                THE OPEN SOURCE ROUTE
             </div>
+            <div class="os-content">
+                We believe in the power of extreme transparency. The core engine powering Aegis Voice is fully open-sourced under the <strong>MIT License</strong>. <br><br>
+                If you are a developer, you are completely free to clone our repository, configure your own NPU environment, and compile the engine yourself at absolutely no cost. <br><br>
+                However, if you want a plug-and-play solution without the hassle of building from source, or simply wish to <strong>support our independent research lab</strong>, purchasing the compiled binary on Google Play is the best way to back our mission.
+            </div>
+            <a href="https://github.com/chuanis/offline-voice-android" target="_blank" class="btn-github">
+                <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                VIEW SOURCE ON GITHUB
+            </a>
         </div>
     </main>
 </body>
